@@ -1,0 +1,33 @@
+{
+  "name": "wikidot-kit",
+  "version": "0.0.0",
+  "description": "Tool for extracting useful data from wikidot",
+  "license": "MIT",
+  "repository": "resure/wikidot-kit",
+  "author": {
+    "name": "Gadzhi Gadzhiev",
+    "email": "inbox@resure.net",
+    "url": "resure.net"
+  },
+  "bin": "cli.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "xo && ava"
+  },
+  "files": [
+    "index.js",
+    "cli.js"
+  ],
+  "keywords": [
+    "wikidot"
+  ],
+  "dependencies": {
+    "meow": "^3.7.0"
+  },
+  "devDependencies": {
+    "ava": "^0.11.0",
+    "xo": "^0.12.1"
+  }
+}
