@@ -24,7 +24,8 @@
     "wikidot"
   ],
   "dependencies": {
-    "meow": "^3.7.0"
+    "meow": "^3.7.0",
+    "wikidot": "^1.0.0"
   },
   "devDependencies": {
     "ava": "^0.11.0",
