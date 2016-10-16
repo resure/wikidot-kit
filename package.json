@@ -25,7 +25,8 @@
   "dependencies": {
     "cheerio": "^0.22.0",
     "got": "^6.5.0",
-    "wikidot": "^1.0.0"
+    "wikidot": "^1.0.0",
+    "wikidot-ajax": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^2.5.3",

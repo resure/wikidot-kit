@@ -1,6 +1,5 @@
 ## WikidotKit [![Build Status](https://travis-ci.org/resure/wikidot-kit.svg?branch=master)](https://travis-ci.org/resure/wikidot-kit) [![Dependencies Status](https://david-dm.org/resure/wikidot-kit.svg)](https://david-dm.org/resure/wikidot-kit)
 
-> My slick module
 
 
 ## Install
