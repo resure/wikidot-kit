@@ -1,6 +1,6 @@
 {
   "name": "wikidot-kit",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Tool for extracting useful data from wikidot",
   "license": "MIT",
   "repository": "resure/wikidot-kit",
