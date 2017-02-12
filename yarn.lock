@@ -84,7 +84,7 @@ balanced-match@^0.4.1:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-0.4.2.tgz#cb3f3e3c732dc0f01ee70b403f302e61d7709838"
 
-bluebird@^3.4.6:
+bluebird@^3.4.6, bluebird@^3.4.7:
   version "3.4.7"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.7.tgz#f72d760be09b7f76d08ed8fae98b289a8d05fab3"
 
@@ -1089,10 +1089,11 @@ util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
 
-wikidot-ajax@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/wikidot-ajax/-/wikidot-ajax-1.0.0.tgz#0d30388dc7195716787e2c71d3a4a571f50b080d"
+wikidot-ajax@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/wikidot-ajax/-/wikidot-ajax-1.1.0.tgz#36d30820cceb7bf68b87bc5fab69109d801b634f"
   dependencies:
+    bluebird "^3.4.7"
     cheerio "^0.22.0"
     got "^6.5.0"
 

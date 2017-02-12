@@ -17,3 +17,11 @@ wk.fetchPagesList({wiki: 'scp-ru'})
 // Fetch selected page and print it's title
 wk.fetchPage({wiki: 'scp-ru', name: 'scp-173'})
     .then((page) => console.log(page.title));
+
+// Fetch and print wiki members list
+wk.fetchMembersList({wikiURL: 'http://scpfoundation.ru'})
+    .then((membersList) => console.log(`Number of members on this wiki: ${membersList.length}`));
+
+// Fetch and print wikidot user profile
+wk.fetchUserProfile({uid: 716422, wikiURL: 'http://scpfoundation.ru'})
+    .then(console.log);
