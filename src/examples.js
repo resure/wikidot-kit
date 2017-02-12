@@ -1,4 +1,6 @@
-import WikidotKit from './';
+'use strict';
+
+const WikidotKit = require('./');
 
 // This example uses WIKIDOT_API_TOKEN env variable
 // Launch it like this:
@@ -8,10 +10,10 @@ const wk = new WikidotKit({
     token: process.env.WIKIDOT_API_TOKEN
 });
 
-// Fetch and print all page names in selected wiki
+// Fetch pages list from selected wiki and print number of them
 wk.fetchPagesList({wiki: 'scp-ru'})
-    .then(console.log);
+    .then((pageList) => console.log(`Number of pages on this wiki: ${pageList.length}`));
 
-// Fetch and print content of a single page
+// Fetch selected page and print it's title
 wk.fetchPage({wiki: 'scp-ru', name: 'scp-173'})
-    .then(console.log);
+    .then((page) => console.log(page.title));

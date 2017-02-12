@@ -1,6 +1,8 @@
-import WikidotAJAX from 'wikidot-ajax';
-import XMLRPC from 'xmlrpc';
-import Promise from 'bluebird';
+'use strict';
+
+const WikidotAJAX = require('wikidot-ajax');
+const XMLRPC = require('xmlrpc');
+const Promise = require('bluebird');
 
 class WikidotKit {
     /**
@@ -84,4 +86,4 @@ class WikidotKit {
 WikidotKit.AJAX = WikidotAJAX;
 WikidotKit.version = require('../package.json').version;
 
-export default WikidotKit;
+module.exports = WikidotKit;
