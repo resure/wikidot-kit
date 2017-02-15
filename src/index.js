@@ -147,9 +147,9 @@ class WikidotKit {
                 const userSince = new Date($(date[0]).text());
                 const memberSince = new Date($(date[1]).text());
                 if (username.length) {
-                    return {username, about, userSince, memberSince};
+                    return {uid, username, about, userSince, memberSince};
                 } else {
-                    return {deleted: true};
+                    return {uid, deleted: true};
                 }
             });
     }
