@@ -117,7 +117,7 @@ class WikidotKit {
                     const jqElem = $(elem);
                     return {
                         username: jqElem.text(),
-                        uid: jqElem.attr('onclick').replace(/.*\((.*?)\).*/, '$1')
+                        uid: Number(jqElem.attr('onclick').replace(/.*\((.*?)\).*/, '$1'))
                     };
                 });
             }, {concurrency: this.concurrency})
