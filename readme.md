@@ -1,6 +1,6 @@
 ## WikidotKit [![Build Status](https://travis-ci.org/resure/wikidot-kit.svg?branch=master)](https://travis-ci.org/resure/wikidot-kit)
 
-## Deprecation notive
+## Deprecation notice
 
 Currently this module moved into [scpnet](https://github.com/resure/scpnet) codebase.
 
