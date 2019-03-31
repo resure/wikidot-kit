@@ -2,6 +2,7 @@ import promiseRetry from 'promise-retry';
 import PQueue from 'p-queue';
 import * as XMLRPC from 'xmlrpc';
 import { WKUser } from './index';
+import got from 'got';
 
 const WikidotAJAX = require('wikidot-ajax');
 
@@ -107,7 +108,7 @@ class WikidotKit {
     }).catch(retry), { retries: RETRIES }));
   }
 
-  ajaxCall(wikiUrl: string, args: Object) {
+  ajaxCall(wikiUrl: string, args: Object): Promise<CheerioSelector> {
     const query = new WikidotAJAX({ baseURL: wikiUrl });
 
     return ajaxQueue.add(() => promiseRetry((retry: any) => {
@@ -183,6 +184,100 @@ class WikidotKit {
       };
     }
     return { uid, deleted: true };
+  }
+
+  public async resolvePageId(pageUrl: string): Promise<number | null> {
+    const PAGE_ID_REGEXP = /WIKIREQUEST\.info\.pageId = (\d+);/;
+    const page = await got(pageUrl);
+    const match = PAGE_ID_REGEXP.exec(page.body);
+    return (match && parseInt(match[1], 10)) || null;
+  }
+
+  public async fetchPageVotes(wikiUrl: string, pageName: string): Promise<WKUserVote[]> {
+    const pageUrl = `${wikiUrl}/${pageName}`;
+    const pageID = await this.resolvePageId(pageUrl);
+    if (!pageID) {
+      throw new Error(`Page ${pageName} ID cannot be resolved`);
+    }
+
+    const $ = await this.ajaxCall(wikiUrl, {
+      moduleName: 'pagerate/WhoRatedPageModule',
+      pageId: pageID,
+    });
+
+    const uids = Array.from($('span.printuser a:first-of-type')
+      .map((i: number, a: CheerioElement) => {
+        const uid = $(a)
+          .attr('onclick')
+          .replace('WIKIDOT.page.listeners.userInfo(', '')
+          .replace('); return false;', '');
+        return parseInt(uid, 10);
+      }));
+    const votes = Array
+      .from($('span:not([class])').map((i: number, span: CheerioElement) => $(span).text().trim()));
+
+    const userVotes: WKUserVote[] = [];
+
+    uids.forEach((uid, i) => {
+      userVotes.push({ uid: Number(uid), vote: String(votes[i]) });
+    });
+
+    return userVotes;
+  }
+
+  public async fetchPageRevisionsList(wikiUrl: string, pageName: string): Promise<WKPageRevisionMeta[]> {
+    const pageUrl = `${wikiUrl}/${pageName}`;
+    const pageID = await this.resolvePageId(pageUrl);
+    if (!pageID) {
+      throw new Error(`Page ${pageName} ID cannot be resolved`);
+    }
+
+    const $ = await this.ajaxCall(wikiUrl, {
+      moduleName: 'history/PageRevisionListModule',
+      page_id: pageID,
+      options: { source: true },
+      perpage: 3000,
+    });
+
+    // @ts-ignore
+    return Array.from($('.page-history tr:not(:first-child)').map((i: number, row: CheerioElement) => {
+      const revisionNumber = parseInt($(row).find('td:nth-child(1)').text(), 10);
+
+      const rawUID = $(row)
+        .find('.printuser a:first-child')
+        .attr('onclick');
+      const uid = rawUID
+        ? parseInt(rawUID
+          .replace('WIKIDOT.page.listeners.userInfo(', '')
+          .replace('); return false;', ''), 10)
+        : -1;
+
+      const date = $(row).find('td:nth-child(6)').text().replace('\n\t\t', '');
+      const description = $(row).find('td:nth-child(7)').text();
+
+      const revisionID = $(row)
+        .find('a:first-child')
+        .attr('onclick')
+        .replace('showVersion(', '')
+        .replace(')', '');
+
+      return {
+        number: revisionNumber,
+        id: parseInt(revisionID, 10),
+        uid,
+        date,
+        description,
+      };
+    }));
+  }
+
+  public async fetchPageRevisionContent(wikiUrl: string, revisionId: number): Promise<string> {
+    const $ = await this.ajaxCall(wikiUrl, {
+      moduleName: 'history/PageSourceModule',
+      revision_id: revisionId,
+    });
+
+    return unescape($('.page-source').text());
   }
 }
 
