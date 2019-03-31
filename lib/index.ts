@@ -1,8 +1,8 @@
 import promiseRetry from 'promise-retry';
 import PQueue from 'p-queue';
 import * as XMLRPC from 'xmlrpc';
-import { WKUser } from './index';
 import got from 'got';
+import { WKUser } from './index';
 
 const WikidotAJAX = require('wikidot-ajax');
 
@@ -186,7 +186,7 @@ class WikidotKit {
     return { uid, deleted: true };
   }
 
-  public async resolvePageId(pageUrl: string): Promise<number | null> {
+  public async resolvePageId(pageUrl: string): Promise<number | null> { // eslint-disable-line class-methods-use-this
     const PAGE_ID_REGEXP = /WIKIREQUEST\.info\.pageId = (\d+);/;
     const page = await got(pageUrl);
     const match = PAGE_ID_REGEXP.exec(page.body);
