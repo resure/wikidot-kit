@@ -85,7 +85,7 @@ class WikidotKit {
 
   log(message: string, extra?: any) {
     if (this.logger) {
-      this.logger(message, extra);
+      this.logger(message, 'info', extra);
     }
   }
 
