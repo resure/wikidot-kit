@@ -1,7 +1,7 @@
 import promiseRetry from 'promise-retry';
 import PQueue from 'p-queue';
 import * as XMLRPC from 'xmlrpc';
-import got from 'got';
+import axios from 'axios';
 import { WKUser } from './index';
 
 const WikidotAJAX = require('wikidot-ajax');
@@ -56,7 +56,7 @@ export interface WKUserVote {
   vote: string;
 }
 
-class WikidotKit {
+export default class WikidotKit {
   static version: string;
 
   xmlrpc: XMLRPC.Client;
@@ -188,8 +188,8 @@ class WikidotKit {
 
   public async resolvePageId(pageUrl: string): Promise<number | null> { // eslint-disable-line class-methods-use-this
     const PAGE_ID_REGEXP = /WIKIREQUEST\.info\.pageId = (\d+);/;
-    const page = await got(pageUrl);
-    const match = PAGE_ID_REGEXP.exec(page.body);
+    const page = await axios({ url: pageUrl });
+    const match = PAGE_ID_REGEXP.exec(page.data);
     return (match && parseInt(match[1], 10)) || null;
   }
 
@@ -280,7 +280,3 @@ class WikidotKit {
     return unescape($('.page-source').text());
   }
 }
-
-WikidotKit.version = require('../package.json').version;
-
-export default WikidotKit;
