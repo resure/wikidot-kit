@@ -2,7 +2,6 @@ import promiseRetry from 'promise-retry';
 import PQueue from 'p-queue';
 import * as XMLRPC from 'xmlrpc';
 import axios from 'axios';
-import { WKUser } from './index';
 
 const WikidotAJAX = require('wikidot-ajax');
 
