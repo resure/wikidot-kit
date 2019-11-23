@@ -1,15 +1,7 @@
-import promiseRetry from 'promise-retry';
-import PQueue from 'p-queue';
 import * as XMLRPC from 'xmlrpc';
 import axios from 'axios';
-import { WKUser } from './index';
 
 const WikidotAJAX = require('wikidot-ajax');
-
-const RETRIES = 4;
-
-const rpcQueue = new PQueue({ concurrency: 4 });
-const ajaxQueue = new PQueue({ concurrency: 8 });
 
 interface LoggerFn {
   (message: string, type?: string, any?: Object): void;
@@ -96,7 +88,7 @@ export default class WikidotKit {
   }
 
   call(method: string, args: Object): Promise<any> {
-    return rpcQueue.add(() => promiseRetry((retry: any) => new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.log('rpcCall', { method, args });
       this.xmlrpc.methodCall(method, [args], (error, result) => {
         if (error) {
@@ -105,16 +97,13 @@ export default class WikidotKit {
           resolve(result);
         }
       });
-    }).catch(retry), { retries: RETRIES }));
+    });
   }
 
   ajaxCall(wikiUrl: string, args: Object): Promise<CheerioSelector> {
     const query = new WikidotAJAX({ baseURL: wikiUrl });
-
-    return ajaxQueue.add(() => promiseRetry((retry: any) => {
-      this.log('ajaxCall', { wikiUrl, args });
-      return query(args).catch(retry);
-    }, { retries: RETRIES }));
+    this.log('ajaxCall', { wikiUrl, args });
+    return query(args);
   }
 
   fetchPagesList(wiki: string): Promise<string[]> {
