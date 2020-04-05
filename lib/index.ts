@@ -196,8 +196,11 @@ export default class WikidotKit {
 
     const uids = Array.from($('span.printuser a:first-of-type')
       .map((i: number, a: CheerioElement) => {
-        const uid = $(a)
-          .attr('onclick')
+        const linkOnClick = $(a).attr('onclick');
+        if (!linkOnClick) {
+          return null;
+        }
+        const uid = linkOnClick
           .replace('WIKIDOT.page.listeners.userInfo(', '')
           .replace('); return false;', '');
         return parseInt(uid, 10);
@@ -244,9 +247,16 @@ export default class WikidotKit {
       const date = $(row).find('td:nth-child(6)').text().replace('\n\t\t', '');
       const description = $(row).find('td:nth-child(7)').text();
 
-      const revisionID = $(row)
-        .find('a:first-child')
-        .attr('onclick')
+      const rowLink = $(row).find('a:first-child');
+      if (!rowLink) {
+        return null;
+      }
+      const rowLinkOnClick = rowLink.attr('onclick');
+      if (!rowLinkOnClick) {
+        return null;
+      }
+
+      const revisionID = rowLinkOnClick
         .replace('showVersion(', '')
         .replace(')', '');
 
