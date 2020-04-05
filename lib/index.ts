@@ -114,7 +114,7 @@ export default class WikidotKit {
     return this.call('pages.get_one', { site: wiki, page: name });
   }
 
-  async fetchMembersList(wikiUrl: string): Promise<WKUser[]> {
+  async fetchMembersList(wikiUrl: string): Promise<Array<{username: string, uid: number}>> {
     this.log('fetchMembersList', { wikiUrl });
 
     const membersPage: any = await this.ajaxCall(wikiUrl, {
@@ -126,7 +126,7 @@ export default class WikidotKit {
 
     this.log('fetchMembersList total pages', { wikiUrl, totalPages });
 
-    const fetchMembersPage = async (pageNumber: number): Promise<WKUser[]> => {
+    const fetchMembersPage = async (pageNumber: number): Promise<Array<{username: string, uid: number}>> => {
       this.log('fetchMembersPage', { wikiUrl, pageNumber });
 
       const $: any = await this.ajaxCall(wikiUrl, {
@@ -150,7 +150,7 @@ export default class WikidotKit {
 
     this.log('fetchMembersList full list is ready');
 
-    return Promise.all(fullUserList.map(({ uid }: WKUser) => this.fetchUserProfile(wikiUrl, uid)));
+    return fullUserList;
   }
 
   async fetchUserProfile(wikiUrl: string, uid: number): Promise<WKUser> {
