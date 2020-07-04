@@ -15,7 +15,8 @@
     "build": "tsc",
     "prepublishOnly": "rm -rf build && npm run build && npm test",
     "test": "jest",
-    "lint": "eslint lib --ext='ts'"
+    "lint": "eslint lib --ext='ts'",
+    "console": "node build/repl"
   },
   "keywords": [
     "wikidot"
