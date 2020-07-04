@@ -1,0 +1,6 @@
+{
+    "extends": "rt-iv/server",
+    "env": {
+        "jest": true
+    }
+}
