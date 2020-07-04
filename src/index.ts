@@ -37,6 +37,17 @@ export interface WKPage {
   commented_by: string;
 }
 
+export interface WKComment {
+    id: number;
+    fullname: string;
+    reply_to: null | number;
+    title: string;
+    content: string;
+    html: string;
+    created_by: string;
+    created_at: string;
+}
+
 export interface WKPageRevisionMeta {
   id: number;
   number: number;
@@ -114,6 +125,25 @@ export default class WikidotKit {
 
   fetchPage(wiki: string, name: string): Promise<WKPage> {
       return this.call<WKPage>('pages.get_one', {site: wiki, page: name});
+  }
+
+  async fetchPageComments(wiki: string, name: string): Promise<WKComment[]> {
+      const BATCH_SIZE = 10; // Wikidot API limit
+      const fetchBatch = async (ids: string[]) => {
+          const comments = await this.call<Record<string, WKComment>>('posts.get', {site: wiki, posts: ids});
+          return Object.keys(comments).map((commentId) => comments[commentId]);
+      };
+      const commentIds = (await this.call<number[]>('posts.select', {site: wiki, page: name})).map((id) => id.toString());
+
+      const comments: WKComment[] = [];
+
+      for (let i = 0; i < Math.ceil(commentIds.length / BATCH_SIZE); i++) {
+          const batch = commentIds.slice(i * BATCH_SIZE, (i * BATCH_SIZE) + BATCH_SIZE);
+          const fetchedComments = await fetchBatch(batch);
+          comments.push(...fetchedComments);
+      }
+
+      return comments;
   }
 
   async fetchMembersList(wikiUrl: string): Promise<Array<{username: string; uid: number}>> {
