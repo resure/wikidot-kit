@@ -9,4 +9,4 @@ $ npm install --save wikidot-kit
 
 ## Usage
 
-See `src/examples.js`.
+See `src/examples.ts`.
