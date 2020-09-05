@@ -77,6 +77,15 @@ it('fetches single profile', async () => {
     expect(userProfile.username).toEqual('Resure');
 });
 
+it('fetches single profile by username', async () => {
+    const wk = getKit();
+
+    const userProfile = await wk.fetchUserProfileByUsername('resure');
+    expect(userProfile.username).toEqual('Resure');
+    expect(userProfile.uid).toEqual(716422);
+    expect(userProfile.userSince.toISOString()).toEqual('2011-02-21T21:28:00.000Z');
+});
+
 it('fetches page comments', async () => {
     jest.setTimeout(100 * 1000);
     const wk = getKit();

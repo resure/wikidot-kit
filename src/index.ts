@@ -2,6 +2,7 @@
 
 import * as XMLRPC from 'xmlrpc';
 import axios from 'axios';
+import cheerio from 'cheerio';
 import {SimpleObject} from './types';
 import prepareCaller from './ajax';
 
@@ -60,6 +61,8 @@ export interface WKUserVote {
   uid: number;
   vote: string;
 }
+
+const WIKIDOT_ENDPOINT = 'https://www.wikidot.com';
 
 export default class WikidotKit {
   static version: string;
@@ -193,8 +196,8 @@ export default class WikidotKit {
           user_id: uid,
       });
 
-      const username = $('h1').text();
-      const about = $('.table tr em').text();
+      const username = $('h1').text().trim();
+      const about = $('.table tr em').text().trim();
       const date = $('.table tr .odate');
       const userSince = new Date($(date[0]).text());
       const memberSince = new Date($(date[1]).text());
@@ -205,6 +208,32 @@ export default class WikidotKit {
           };
       }
       return {uid, deleted: true};
+  }
+
+  async fetchUserProfileByUsername(inputUsername: string): Promise<WKUser> {
+      this.log('fetchUserProfileByUsername', {username: inputUsername});
+
+      const {data} = await axios.get(`${WIKIDOT_ENDPOINT}/user:info/${inputUsername}`);
+
+      const $ = cheerio.load(data);
+
+      const username = $('h1').text().trim();
+      const userSince = new Date($('.profile-box dd .odate').text().trim());
+      const uidString = $('#page-content .btn-danger.pull-right').attr('onclick')?.match(/\d+/)?.[0] || '';
+
+      if (!uidString) {
+          throw new Error('Cannot extract user uid');
+      }
+
+      const uid = parseInt(uidString, 10);
+
+      if (username.length) {
+          return {
+              uid, username, userSince,
+          };
+      } else {
+          return {uid, deleted: true};
+      }
   }
 
   async resolvePageId(pageUrl: string): Promise<number | null> { // eslint-disable-line class-methods-use-this
