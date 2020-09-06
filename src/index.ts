@@ -211,9 +211,10 @@ export default class WikidotKit {
   }
 
   async fetchUserProfileByUsername(inputUsername: string): Promise<WKUser> {
-      this.log('fetchUserProfileByUsername', {username: inputUsername});
+      const preparedUsername = inputUsername.toLowerCase().replace(/\s+/g, '-');
+      this.log('fetchUserProfileByUsername', {username: inputUsername, preparedUsername});
 
-      const {data} = await axios.get(`${WIKIDOT_ENDPOINT}/user:info/${inputUsername}`);
+      const {data} = await axios.get(`${WIKIDOT_ENDPOINT}/user:info/${preparedUsername}`);
 
       const $ = cheerio.load(data);
 
