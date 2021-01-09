@@ -6,7 +6,10 @@ import WikidotKit from '.';
 // $ WIKIDOT_API_TOKEN='your_token_here' node examples.js
 
 async function main() {
-    const wk = new WikidotKit(process.env.WIKIDOT_API_TOKEN as string, console.log);
+    const wk = new WikidotKit(
+        process.env.WIKIDOT_API_TOKEN as string,
+        console.log
+    );
 
     // Fetch pages list from selected wiki and print number of them
     // const ruPagesList = await wk.fetchPagesList('scp-ru');

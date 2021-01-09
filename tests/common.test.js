@@ -2,7 +2,6 @@ const WikidotKit = require('../build').default;
 
 const getKit = () => new WikidotKit(process.env.WIKIDOT_API_TOKEN, console.log);
 
-
 it('fetches pages list', async () => {
     const wk = getKit();
 
@@ -24,8 +23,10 @@ it('fetches page votes', async () => {
 
     const votes = await wk.fetchPageVotes('http://scpfoundation.net', pageName);
 
-    const confirmedPositiveVote = votes.find((vote) => vote.uid === 716422).vote;
-    const confirmedNegativeVote = votes.find((vote) => vote.uid === 657647).vote;
+    const confirmedPositiveVote = votes.find((vote) => vote.uid === 716422)
+        .vote;
+    const confirmedNegativeVote = votes.find((vote) => vote.uid === 657647)
+        .vote;
 
     expect(confirmedPositiveVote).toEqual('+');
     expect(confirmedNegativeVote).toEqual('-');
@@ -33,16 +34,23 @@ it('fetches page votes', async () => {
 
 it('fetches page revision list', async () => {
     const wk = getKit();
-    const revisions = await wk.fetchPageRevisionsList('http://scpfoundation.net', 'scp-173');
+    const revisions = await wk.fetchPageRevisionsList(
+        'http://scpfoundation.net',
+        'scp-173'
+    );
 
     const firstRevision = revisions.find((r) => r.number === 0);
     const sixthRevision = revisions.find((r) => r.number === 5);
 
-    expect(firstRevision.date.toISOString()).toEqual('2010-06-27T17:04:00.000Z');
+    expect(firstRevision.date.toISOString()).toEqual(
+        '2010-06-27T17:04:00.000Z'
+    );
     expect(firstRevision.id).toEqual(15462778);
     expect(firstRevision.uid).toEqual(507955);
 
-    expect(sixthRevision.date.toISOString()).toEqual('2010-06-30T14:35:00.000Z');
+    expect(sixthRevision.date.toISOString()).toEqual(
+        '2010-06-30T14:35:00.000Z'
+    );
     expect(sixthRevision.id).toEqual(15506120);
     expect(sixthRevision.uid).toEqual(507955);
     expect(sixthRevision.description).toEqual('Added tags: euclid.');
@@ -50,7 +58,10 @@ it('fetches page revision list', async () => {
 
 it('fetches page revision data', async () => {
     const wk = getKit();
-    const revision = await wk.fetchPageRevisionContent('http://scpfoundation.net', 15506123);
+    const revision = await wk.fetchPageRevisionContent(
+        'http://scpfoundation.net',
+        15506123
+    );
     expect(revision.length).toEqual(1650);
 });
 
@@ -73,7 +84,10 @@ it('fetches members list', async () => {
 it('fetches single profile', async () => {
     const wk = getKit();
 
-    const userProfile = await wk.fetchUserProfile('http://scpfoundation.net', 716422);
+    const userProfile = await wk.fetchUserProfile(
+        'http://scpfoundation.net',
+        716422
+    );
     expect(userProfile.username).toEqual('Resure');
 });
 
@@ -83,7 +97,9 @@ it('fetches single profile by username', async () => {
     const userProfile = await wk.fetchUserProfileByUsername('resure');
     expect(userProfile.username).toEqual('Resure');
     expect(userProfile.uid).toEqual(716422);
-    expect(userProfile.userSince.toISOString()).toEqual('2011-02-21T21:28:00.000Z');
+    expect(userProfile.userSince.toISOString()).toEqual(
+        '2011-02-21T21:28:00.000Z'
+    );
 });
 
 it('fetches page comments', async () => {
@@ -97,4 +113,3 @@ it('fetches page comments', async () => {
     expect(comments[7]['created_by']).toEqual('paranoik');
     expect(comments[7].content.length).toEqual(184);
 });
-
