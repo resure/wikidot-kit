@@ -41,6 +41,8 @@ public/dist/*
 .env
 build/**/*
 
+.eslintcache
+
 .idea
 
 todo
