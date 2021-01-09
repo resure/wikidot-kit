@@ -13,7 +13,7 @@ interface InitArgs {
  */
 export default function prepareCaller({
     baseUrl,
-}: InitArgs): (params: SimpleObject) => Promise<CheerioStatic> {
+}: InitArgs): (params: SimpleObject) => Promise<cheerio.Root> {
     const wikidotToken7 = Math.random().toString(36).substring(7);
     const connectorURL = `${baseUrl}/ajax-module-connector.php`;
 
@@ -27,7 +27,7 @@ export default function prepareCaller({
      */
     return async function makeAjaxQuery(
         params: SimpleObject
-    ): Promise<CheerioStatic> {
+    ): Promise<cheerio.Root> {
         const page = await axios.post(
             connectorURL,
             qs.stringify(

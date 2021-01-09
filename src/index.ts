@@ -116,7 +116,7 @@ export default class WikidotKit {
         });
     }
 
-    ajaxCall(wikiUrl: string, args: SimpleObject): Promise<CheerioSelector> {
+    ajaxCall(wikiUrl: string, args: SimpleObject): Promise<cheerio.Selector> {
         const query = prepareCaller({baseUrl: wikiUrl});
         this.log('ajaxCall', {wikiUrl, args});
         return query(args);
@@ -300,7 +300,7 @@ export default class WikidotKit {
 
         const uids = Array.from(
             $('span.printuser a:first-of-type').map(
-                (i: number, a: CheerioElement) => {
+                (i: number, a: cheerio.Element) => {
                     const linkOnClick = $(a).attr('onclick');
                     if (!linkOnClick) {
                         return null;
@@ -313,7 +313,7 @@ export default class WikidotKit {
             )
         );
         const votes = Array.from(
-            $('span:not([class])').map((i: number, span: CheerioElement) =>
+            $('span:not([class])').map((i: number, span: cheerio.Element) =>
                 $(span).text().trim()
             )
         );
@@ -348,7 +348,7 @@ export default class WikidotKit {
             $('.page-history tr:not(:first-child)')
         );
 
-        const revisions = revisionRows.map((row: CheerioElement) => {
+        const revisions = revisionRows.map((row: cheerio.Element) => {
             const revisionNumber = parseInt(
                 $(row).find('td:nth-child(1)').text(),
                 10
