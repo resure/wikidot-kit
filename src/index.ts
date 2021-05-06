@@ -172,7 +172,6 @@ export default class WikidotKit {
             membersPage('.pager .target:nth-last-child(2)').text(),
             10
         );
-        const pages = Array.from({length: totalPages}, (_, i) => i);
 
         this.log('fetchMembersList total pages', {wikiUrl, totalPages});
 
@@ -196,9 +195,11 @@ export default class WikidotKit {
             });
         };
 
-        const userLists = await Promise.all(
-            pages.map((pageNumber) => fetchMembersPage(pageNumber))
-        );
+        const userLists = [];
+        for (let i = 0; i < totalPages; i++) {
+            const userList = await fetchMembersPage(i);
+            userLists.push(userList);
+        }
 
         const fullUserList = userLists.reduce(
             (allUsers, pageOfUsers) => allUsers.concat(pageOfUsers),
