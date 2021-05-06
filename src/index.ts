@@ -168,10 +168,11 @@ export default class WikidotKit {
             moduleName: 'membership/MembersListModule',
         });
 
-        const totalPages = parseInt(
-            membersPage('.pager .target:nth-last-child(2)').text(),
-            10
-        );
+        const totalPages =
+            parseInt(
+                membersPage('.pager .target:nth-last-child(2)').text(),
+                10
+            ) || 1;
 
         this.log('fetchMembersList total pages', {wikiUrl, totalPages});
 

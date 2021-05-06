@@ -75,10 +75,12 @@ it('resolves page id', async () => {
 it('fetches members list', async () => {
     const wk = getKit();
 
-    const members = await wk.fetchMembersList('http://scpfoundation.net');
+    const members = await wk.fetchMembersList('http://o5r.wikidot.com');
 
-    expect(members[0].username).toEqual('scp-ru');
-    expect(members[1].username).toEqual('Whitepaw');
+    expect(members[0].username).toEqual('Resure');
+    expect(members[1].username).toEqual('Ged_Malburg');
+    expect(members[2].username).toEqual('Gene R');
+    expect(members.length).toEqual(3);
 });
 
 it('fetches single profile', async () => {
