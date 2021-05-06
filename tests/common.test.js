@@ -5,9 +5,11 @@ const getKit = () => new WikidotKit(process.env.WIKIDOT_API_TOKEN, console.log);
 it('fetches pages list', async () => {
     const wk = getKit();
 
-    const ruPagesList = await wk.fetchPagesList('scp-ru');
-    expect(ruPagesList[0]).toEqual('admin:manage');
-    expect(ruPagesList[42]).toEqual('scp-010');
+    const ruPagesList = await wk.fetchPagesList('o5r');
+
+    expect(ruPagesList[0]).toEqual('nav:side');
+    expect(ruPagesList[15]).toEqual('how-to-edit-pages');
+    expect(ruPagesList.length).toEqual(29);
 });
 
 it('fetches single page', async () => {
